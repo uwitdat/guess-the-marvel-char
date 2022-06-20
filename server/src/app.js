@@ -18,7 +18,7 @@ const createApp = () => {
     res.send("Hello World marvel!");
   });
 
-  app.use('/marvel', marvelRouter);
+  app.use('/characters', marvelRouter);
 
 
   return app;
