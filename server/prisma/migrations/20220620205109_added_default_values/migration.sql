@@ -1,0 +1,6 @@
+-- AlterTable
+ALTER TABLE "Character" ALTER COLUMN "name" SET DEFAULT E'',
+ALTER COLUMN "firstAppearance" SET DEFAULT E'',
+ALTER COLUMN "fullName" SET DEFAULT E'',
+ALTER COLUMN "publisher" SET DEFAULT E'',
+ALTER COLUMN "sprite" SET DEFAULT E'';
