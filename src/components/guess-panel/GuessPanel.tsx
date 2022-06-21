@@ -81,7 +81,7 @@ const GuessPanel: React.FC<GuessPanelProps> = ({
       />
       {options
         ? options.map((option, idx) => (
-            <div>
+            <div key={option.id}>
               <button onClick={() => handleGuess(option)}>
                 {optionsLtrs[idx]}: {option.name}
               </button>
