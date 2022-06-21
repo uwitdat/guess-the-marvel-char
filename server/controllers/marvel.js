@@ -12,12 +12,10 @@ export const getRandomChar = async (req, res) => {
     select: {
       name: true,
       id: true,
-      sprite: true,
-      firstAppearance: true,
+      marvelId: true,
+      description: true,
       timesVotedCorrectly: true,
       timesVotedOn: true,
-      fullName: true,
-      publisher: true
     },
   })
 
@@ -26,17 +24,22 @@ export const getRandomChar = async (req, res) => {
   data.toGuess = randomChar;
   data.against = charsAgainst;
 
-  res.send({ data: data })
+  res.send({ success: true, data: data })
 }
 
+const MIN = 1
+const MAX = 1562
+
 function getRandomInt() {
-  let min = Math.ceil(7);
-  let max = Math.floor(579);
+  let min = Math.ceil(MIN);
+  let max = Math.floor(MAX);
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 const getCharsToGuessAgainst = async (int) => {
-  let data = []
+  let sameChars = {}
+  sameChars[int] = true
+  const chars = [];
 
   let i = 4;
 
@@ -52,13 +55,14 @@ const getCharsToGuessAgainst = async (int) => {
         id: true
       },
     })
-    if (randomChar.id === int) {
+    if (sameChars[randomChar.id]) {
       continue;
     } else {
-      data.push(randomChar)
+      sameChars[randomChar.id] = true;
+      chars.push(randomChar)
       i--
     }
   }
 
-  return data;
+  return chars;
 }

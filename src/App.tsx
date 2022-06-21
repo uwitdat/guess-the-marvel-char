@@ -1,9 +1,10 @@
 import "./App.css";
+import CharGuess from "./components/character-guess/CharGuess";
 
 function App() {
   return (
     <div className="App">
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
+      <CharGuess />
     </div>
   );
 }

@@ -1,10 +1,11 @@
 -- CreateTable
 CREATE TABLE "Character" (
     "id" SERIAL NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "name" VARCHAR(255) NOT NULL,
-    "description" TEXT,
+    "name" VARCHAR(255),
     "marvelId" INTEGER NOT NULL,
+    "description" TEXT,
+    "timesVotedOn" INTEGER NOT NULL DEFAULT 0,
+    "timesVotedCorrectly" INTEGER NOT NULL DEFAULT 0,
 
     CONSTRAINT "Character_pkey" PRIMARY KEY ("id")
 );

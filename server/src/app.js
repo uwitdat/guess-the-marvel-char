@@ -8,7 +8,7 @@ const { json } = pkg;
 const createApp = () => {
   const app = express();
   app.use(json({
-    limit: '50mb'
+    limit: '200mb'
   }
 
   ));

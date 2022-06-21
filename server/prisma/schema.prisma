@@ -11,13 +11,10 @@ datasource db {
 }
 
 model Character {
-  id                  Int      @id @default(autoincrement())
-  createdAt           DateTime @default(now())
-  name                String?  @db.VarChar(255)
-  sprite              String?
-  fullName            String?  @db.VarChar(255)
-  publisher           String?  @db.VarChar(255)
-  firstAppearance     String?  @db.VarChar(255)
-  timesVotedOn        Int      @default(0)
-  timesVotedCorrectly Int      @default(0)
+  id                  Int     @id @default(autoincrement())
+  name                String? @db.VarChar(255)
+  marvelId            Int
+  description         String?
+  timesVotedOn        Int     @default(0)
+  timesVotedCorrectly Int     @default(0)
 }
