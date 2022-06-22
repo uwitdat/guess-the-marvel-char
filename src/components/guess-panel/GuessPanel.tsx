@@ -3,6 +3,8 @@ import AverageGuess from "../average-guess-percentage/AverageGuess";
 import { HeroImgObj, ToGuessObj } from "../character-guess/CharGuess";
 import { shuffle } from "./utils/helper";
 import { handleCorrectGuess, handleIncorrectGuess } from "./utils/helper";
+import Option from "./option/Option";
+import CurrentGuess from "./current-guess/CurrentGuess";
 
 interface GuessPanelProps {
   heroImg: HeroImgObj;
@@ -12,7 +14,7 @@ interface GuessPanelProps {
   setStreak: SetStateAction<any>;
 }
 
-interface OptionsObj {
+export interface OptionsObj {
   name: string;
   id: number;
 }
@@ -33,7 +35,6 @@ const GuessPanel: React.FC<GuessPanelProps> = ({
     1: "b",
     2: "c",
     3: "d",
-    4: "e",
   };
 
   useEffect(() => {
@@ -68,33 +69,8 @@ const GuessPanel: React.FC<GuessPanelProps> = ({
   };
 
   return (
-    <div>
+    <div className="relative">
       <h2>Your Streak: {streak}</h2>
-      <AverageGuess
-        total={toGuess.toGuess.timesVotedOn}
-        totalCorrect={toGuess.toGuess.timesVotedCorrectly}
-      />
-      <img
-        style={{ aspectRatio: "1", height: "30rem", borderRadius: "50%" }}
-        src={`${heroImg.path}.${heroImg.extension}`}
-        alt="hero"
-      />
-      {options
-        ? options.map((option, idx) => (
-            <div key={option.id}>
-              <button onClick={() => handleGuess(option)}>
-                {optionsLtrs[idx]}: {option.name}
-              </button>
-            </div>
-          ))
-        : null}
-      {currentGuess && (
-        <div>
-          <h2>Your Guess</h2>
-          <p>{currentGuess.name}</p>
-          <button onClick={submitGuess}>Go</button>
-        </div>
-      )}
       <button onClick={() => setShowHint(!showHint)}>Show Hint</button>
       {showHint &&
         (toGuess.toGuess.description === "" ? (
@@ -102,6 +78,41 @@ const GuessPanel: React.FC<GuessPanelProps> = ({
         ) : (
           <p>{toGuess.toGuess.description}</p>
         ))}
+      <img
+        style={{
+          aspectRatio: "1",
+          height: "20rem",
+          borderRadius: "50%",
+          boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+          margin: "2rem auto",
+        }}
+        src={`${heroImg.path}.${heroImg.extension}`}
+        alt="hero"
+      />
+      <AverageGuess
+        total={toGuess.toGuess.timesVotedOn}
+        totalCorrect={toGuess.toGuess.timesVotedCorrectly}
+      />
+      <div className="grid grid-cols-2 grid-rows-2 my-5">
+        {options
+          ? options.map((option, idx) => (
+              <Option
+                key={option.id}
+                option={option}
+                handleGuess={handleGuess}
+                idx={idx}
+                optionsLtrs={optionsLtrs}
+                currentGuess={currentGuess}
+              />
+            ))
+          : null}
+      </div>
+      {currentGuess && (
+        <CurrentGuess
+          currentGuess={currentGuess.name}
+          submitGuess={submitGuess}
+        />
+      )}
     </div>
   );
 };

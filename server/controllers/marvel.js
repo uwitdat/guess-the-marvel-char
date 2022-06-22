@@ -41,7 +41,7 @@ const getCharsToGuessAgainst = async (int) => {
   sameChars[int] = true
   const chars = [];
 
-  let i = 4;
+  let i = 3;
 
   while (i > 0) {
     const randomInt = getRandomInt();

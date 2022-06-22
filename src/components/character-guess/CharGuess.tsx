@@ -36,8 +36,6 @@ const CharGuess = () => {
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [streak, setStreak] = useState<number>(0);
 
-  // console.log(heroImg);
-
   const fetchGuess = async () => {
     const { data } = await axios.get(`${LOCAL_URI}/characters/random`);
     if (data.success) {

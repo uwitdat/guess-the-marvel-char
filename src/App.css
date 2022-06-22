@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+    font-family: "Arcade";
+    src: url('/public/assets/fonts/ka1.ttf');
+}
+
+.App {
+    font-family: 'Arcade';
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.guess-panel {
+    background-color: rgba(236, 236, 236, 0.883);
+    backdrop-filter: blur(2px);
+}
