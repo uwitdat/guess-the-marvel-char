@@ -3,7 +3,7 @@ import { getUser, createUser } from '../controllers/user.js';
 
 const userRouter = express.Router();
 
-userRouter.get('/', getUser);
-userRouter.post('/', createUser);
+userRouter.get('/:email/get-authed-user', getUser);
+userRouter.post('/new-user', createUser);
 
 export default userRouter

@@ -2,6 +2,9 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { isThereAnImage } from "./utils/helper";
 import GuessPanel from "../guess-panel/GuessPanel";
+import { UserContext, UserContextType } from "../../App";
+
+import { useContext } from "react";
 
 const MARVEL_URI = "https://gateway.marvel.com:443/v1/public/characters";
 const API_URI = process.env.REACT_APP_API_URL;
@@ -35,6 +38,12 @@ const CharGuess = () => {
   const [heroImg, setHeroImg] = useState<HeroImgObj | null>(null);
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [streak, setStreak] = useState<number>(0);
+
+  const { authedUser, setAuthedUser } = useContext(
+    UserContext
+  ) as UserContextType;
+
+  console.log(authedUser);
 
   const fetchGuess = async () => {
     const { data } = await axios.get(`${API_URI}/characters/random`);
@@ -78,6 +87,7 @@ const CharGuess = () => {
 
   return (
     <div>
+      <h2>welcome {authedUser && authedUser.userName}</h2>
       {toGuess && heroImg && !isFetching ? (
         <GuessPanel
           heroImg={heroImg}

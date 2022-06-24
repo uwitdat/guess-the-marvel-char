@@ -2,6 +2,7 @@ import express from "express";
 import pkg from 'body-parser';
 import cors from 'cors';
 import marvelRouter from "../routes/marvel.js";
+import userRouter from "../routes/user.js";
 
 const { json } = pkg;
 
@@ -19,6 +20,7 @@ const createApp = () => {
   });
 
   app.use('/characters', marvelRouter);
+  app.use('/users', userRouter);
 
 
   return app;
