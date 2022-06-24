@@ -5,7 +5,9 @@ import { shuffle } from "./utils/helper";
 import { handleCorrectGuess, handleIncorrectGuess } from "./utils/helper";
 import Option from "./option/Option";
 import CurrentGuess from "./current-guess/CurrentGuess";
-
+import { useContext } from "react";
+import { UserContext, UserContextType } from "../../App";
+import axios from "axios";
 interface GuessPanelProps {
   heroImg: HeroImgObj;
   toGuess: ToGuessObj;
@@ -18,6 +20,8 @@ export interface OptionsObj {
   name: string;
   id: number;
 }
+
+const API_URI = process.env.REACT_APP_API_URL;
 
 const GuessPanel: React.FC<GuessPanelProps> = ({
   heroImg,
@@ -37,6 +41,10 @@ const GuessPanel: React.FC<GuessPanelProps> = ({
     3: "d",
   };
 
+  const { authedUser, setAuthedUser } = useContext(
+    UserContext
+  ) as UserContextType;
+
   useEffect(() => {
     const { toGuess: hero, against } = toGuess;
     const againstClone = [...against];
@@ -52,7 +60,7 @@ const GuessPanel: React.FC<GuessPanelProps> = ({
     }
   };
 
-  const submitGuess = () => {
+  const submitGuess = async () => {
     const { toGuess: hero } = toGuess;
 
     if (currentGuess!.id === toGuess.toGuess.id) {
@@ -60,11 +68,35 @@ const GuessPanel: React.FC<GuessPanelProps> = ({
       setStreak(streak + 1);
       refetch();
     } else {
+      if (streak > authedUser!.longestStreak) {
+        updateUserStreak();
+      } else {
+        setStreak(0);
+        refetch();
+        handleIncorrectGuess(hero.id, hero.timesVotedOn);
+      }
+      // TODO: show game over and leaderboard
+    }
+  };
+
+  const updateUserStreak = async () => {
+    const { toGuess: hero } = toGuess;
+
+    const values = {
+      streak,
+    };
+
+    const { data } = await axios.patch(
+      `${API_URI}/users/${authedUser!.email}/update-streak`,
+      values
+    );
+    if (data.success) {
+      setAuthedUser(data.data);
       setStreak(0);
       refetch();
       handleIncorrectGuess(hero.id, hero.timesVotedOn);
-      //TODO: update user streak
-      // TODO: show game over and leaderboard
+    } else {
+      console.log("error", data.errorMessage);
     }
   };
 

@@ -1,10 +1,10 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, SetStateAction } from "react";
 import { isThereAnImage } from "./utils/helper";
 import GuessPanel from "../guess-panel/GuessPanel";
 import { UserContext, UserContextType } from "../../App";
-
 import { useContext } from "react";
+import { auth } from "../../firebase";
 
 const MARVEL_URI = "https://gateway.marvel.com:443/v1/public/characters";
 const API_URI = process.env.REACT_APP_API_URL;
@@ -33,7 +33,11 @@ interface Against {
   id: number;
 }
 
-const CharGuess = () => {
+interface CharGuessProps {
+  setUser: SetStateAction<any>;
+}
+
+const CharGuess: React.FC<CharGuessProps> = ({ setUser }) => {
   const [toGuess, setToGuess] = useState<ToGuessObj | null>(null);
   const [heroImg, setHeroImg] = useState<HeroImgObj | null>(null);
   const [isFetching, setIsFetching] = useState<boolean>(false);
@@ -75,6 +79,12 @@ const CharGuess = () => {
     }
   };
 
+  const handleLogoutUser = async () => {
+    setAuthedUser(null);
+    await auth.signOut();
+    setUser(null);
+  };
+
   useEffect(() => {
     fetchGuess();
   }, []);
@@ -88,6 +98,7 @@ const CharGuess = () => {
   return (
     <div>
       <h2>welcome {authedUser && authedUser.userName}</h2>
+      <button onClick={handleLogoutUser}>Logout</button>
       {toGuess && heroImg && !isFetching ? (
         <GuessPanel
           heroImg={heroImg}

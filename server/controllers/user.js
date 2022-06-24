@@ -31,3 +31,20 @@ export const createUser = async (req, res) => {
     res.status(500).send({ 'success': false, 'errorMessage': err.message })
   }
 }
+
+
+export const updateStreak = async (req, res) => {
+  try {
+    const updateUser = await prisma.user.update({
+      where: {
+        email: req.params.email,
+      },
+      data: {
+        longestStreak: req.body.streak,
+      },
+    })
+    res.status(200).send({ 'success': true, 'data': updateUser })
+  } catch (err) {
+    res.status(500).send({ 'success': false, 'errorMessage': err.message })
+  }
+}

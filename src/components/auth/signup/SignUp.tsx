@@ -60,6 +60,7 @@ const SignUp: React.FC = () => {
       <h3 style={{ fontFamily: "Arcade" }}>Please signup to play</h3>
       <input onChange={handleUpdateValues} placeholder="email" name="email" />
       <input
+        type="password"
         onChange={handleUpdateValues}
         placeholder="password"
         name="password"

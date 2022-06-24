@@ -4,15 +4,40 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import { modalStyles } from "../styles";
 import SignUp from "../signup/SignUp";
+import { auth } from "../../../firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 interface LoginProps {
   open: boolean;
-  handleClose: () => void;
 }
 
-const Login: React.FC<LoginProps> = ({ open, handleClose }) => {
-  const handleSignIn = () => {
-    handleClose();
+interface UserObj {
+  email: string;
+  password: string;
+}
+
+const Login: React.FC<LoginProps> = ({ open }) => {
+  const [user, setUser] = useState<UserObj>({
+    email: "",
+    password: "",
+  });
+
+  const handleSignIn = async () => {
+    const { email, password } = user;
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch (err: any) {
+      console.log("err", err.message);
+    }
+  };
+
+  const handleUpdateValues = (e: any) => {
+    const { name, value } = e.target;
+
+    setUser({
+      ...user,
+      [name]: value,
+    });
   };
 
   const [isLogin, setIsLogin] = useState<boolean>(true);
@@ -32,8 +57,17 @@ const Login: React.FC<LoginProps> = ({ open, handleClose }) => {
         {isLogin ? (
           <React.Fragment>
             <h3 style={{ fontFamily: "Arcade" }}>Please Login to play</h3>
-            <input placeholder="email" />
-            <input placeholder="password" />
+            <input
+              placeholder="email"
+              name="email"
+              onChange={handleUpdateValues}
+            />
+            <input
+              type="password"
+              placeholder="password"
+              name="password"
+              onChange={handleUpdateValues}
+            />
             <button onClick={handleSignIn}>Login</button>
             <br />
           </React.Fragment>
