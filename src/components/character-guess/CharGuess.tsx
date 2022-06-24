@@ -4,7 +4,7 @@ import { isThereAnImage } from "./utils/helper";
 import GuessPanel from "../guess-panel/GuessPanel";
 
 const MARVEL_URI = "https://gateway.marvel.com:443/v1/public/characters";
-const LOCAL_URI = "http://localhost:3001";
+const API_URI = process.env.REACT_APP_API_URL;
 
 export interface HeroImgObj {
   path: string;
@@ -37,7 +37,7 @@ const CharGuess = () => {
   const [streak, setStreak] = useState<number>(0);
 
   const fetchGuess = async () => {
-    const { data } = await axios.get(`${LOCAL_URI}/characters/random`);
+    const { data } = await axios.get(`${API_URI}/characters/random`);
     if (data.success) {
       setToGuess(data.data);
     } else {

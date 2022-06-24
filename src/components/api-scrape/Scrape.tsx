@@ -4,7 +4,7 @@ const Scrape = () => {
   const handleScrapeApi = async () => {
     try {
       const { data } = await axios.get(
-        `https://gateway.marvel.com:443/v1/public/characters?offset=1500&limit=62&apikey=${process.env.REACT_APP_MARVEL_API_KEY}`
+        `https://gateway.marvel.com:443/v1/public/characters?offset=0&limit=100&apikey=${process.env.REACT_APP_MARVEL_API_KEY}`
       );
       cleanData(data.data.results);
     } catch (err: any) {
