@@ -1,5 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
+import prisma from "../prismaInit.js";
 
 export const getRandomChar = async (req, res) => {
   const randomInt = getRandomInt();
